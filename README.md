@@ -54,50 +54,15 @@ The following table lists the 38 open-source Android apps used in our evaluation
 * bug20 ([link](https://github.com/woheller69/weather/issues/81))
 * bug21 ([link](https://github.com/woheller69/weather/issues/82))
 * bug22 ([link](https://github.com/jonasoreland/runnerup/issues/1094))
-* os-bug23 ([link]())
-* os-bug24 (org.catrobat.paintroid)
- <img width="833" alt="Screen Shot 2023-02-17 at 10 25 20 PM" src="https://user-images.githubusercontent.com/100833575/219681360-04107e44-6e4e-4190-95d3-5165f2a4a64c.png">
- 
-* cs-bug1 (com.atomczak.notepat)
-<img width="742" alt="Screen Shot 2023-02-17 at 11 12 57 PM" src="https://user-images.githubusercontent.com/100833575/219692542-264ac487-f9aa-4df4-b7af-61d8649f2629.png">
-
-* cs-bug2 (com.atomczak.notepat)
-<img width="741" alt="Screen Shot 2023-02-17 at 11 15 14 PM" src="https://user-images.githubusercontent.com/100833575/219693173-6729982c-8110-417b-a2b9-ac87e4bd9a1a.png">
-
-* cs-bug3 (com.usps)
-<img width="567" alt="Screen Shot 2023-02-17 at 11 21 24 PM" src="https://user-images.githubusercontent.com/100833575/219694609-d00e10ba-6178-43bd-8863-9bacad93a0c0.png">
-
-* cs-bug4 (com.usps)
-<img width="754" alt="Screen Shot 2023-02-17 at 11 25 33 PM" src="https://user-images.githubusercontent.com/100833575/219695402-04a48e6d-341b-410a-9c92-c395073f54e7.png">
-
-* cs-bug5 (com.bestweatherfor.bibleoffline_pt_ra)
-<img width="791" alt="Screen Shot 2023-02-17 at 11 50 05 PM" src="https://user-images.githubusercontent.com/100833575/219701213-e158b17e-870f-429e-85f6-1606fdf8b6ea.png">
-
-* cs-bug6 (com.pl.premierleague)
-<img width="792" alt="Screen Shot 2023-02-17 at 11 53 46 PM" src="https://user-images.githubusercontent.com/100833575/219701993-f6ade9ac-0135-42bb-a6b1-6eb6e099c517.png">
-
-* cs-bug7 (com.pl.premierleague)
-<img width="887" alt="Screen Shot 2023-02-17 at 11 58 16 PM" src="https://user-images.githubusercontent.com/100833575/219703027-631d68e7-f58d-4556-9a4e-83501f852737.png">
-
-* cs-bug8 (com.sec.app.samsungprintservice)
-<img width="1109" alt="Screen Shot 2023-02-18 at 12 19 49 AM" src="https://user-images.githubusercontent.com/100833575/219707956-7f31eaa6-578a-46f4-a9c6-cb5a529015d4.png">
-
-* cs-bug9 (com.marvel.comics)
-<img width="925" alt="Screen Shot 2023-02-18 at 12 24 20 AM" src="https://user-images.githubusercontent.com/100833575/219708833-450543e2-e0b1-4394-a631-6d2587049f81.png">
-
-* cs-bug10 (com.anydesk.anydeskandroid)
-<img width="748" alt="Screen Shot 2023-02-18 at 12 27 44 AM" src="https://user-images.githubusercontent.com/100833575/219709665-0aeb2312-f3b0-44b5-af3e-62ff256ddad5.png">
-
-* cs-bug11 (ru.litres.android)
-![Screen Shot 2023-02-18 at 12 32 11 AM](https://user-images.githubusercontent.com/100833575/219710558-161a93bc-8272-4524-ada3-b9222f43fb4d.png)
-
-* cs-bug12 (ru.litres.android)
-<img width="895" alt="Screen Shot 2023-02-18 at 12 33 53 AM" src="https://user-images.githubusercontent.com/100833575/219711059-8c810166-2f58-422a-825a-325bd31ab86b.png">
-
-
+* bug23 (reported by email. WebViewActivity in de.taz.android.app.free) [bug23.pdf](https://github.com/RichardHoOoOo/wTestPlus/files/13951192/bug23.pdf)
+* bug24 (DataPolicyActivity in de.taz.android.app.free) [bug24.pdf](https://github.com/RichardHoOoOo/wTestPlus/files/13950976/bug24.pdf)
+* bug25 (IssueViewerActivity in de.taz.android.app.free) [bug25.pdf](https://github.com/RichardHoOoOo/wTestPlus/files/13951427/bug25.pdf)
+* bug26 (SearchActivity in de.taz.android.app.free) [bug26.pdf](https://github.com/RichardHoOoOo/wTestPlus/files/13951486/bug26.pdf)
+* bug27 (BookmarkViewerActivity in de.taz.android.app.free) [bug27.pdf](https://github.com/RichardHoOoOo/wTestPlus/files/13951593/bug27.pdf)
+* bug28 (PreferenceActivity in app.simple.inure) [bug28.pdf](https://github.com/RichardHoOoOo/wTestPlus/files/13951746/bug28.pdf)
 
 # Tool
-Our tool is composed of 2 parts. The first part instruments an Android app. The second part generates tests for the instrumented app. But before testing an app, a customized Android OS needs to be loaded by Android emulators or real devices.
+Our tool is composed of 3 parts. The first part staticly builds the GUI component transition graph. The second part instruments an app. The third part generates tests for the instrumented app. But before testing an app, a customized Android OS needs to be loaded by Android emulators or real devices.
 
 ## Customized Android OS
 The instrumented app needs to run on a customized Android system because we add one more ID field in `java.lang.Object` in order to ease the variable tracking. It is very simple to use our customized Android system image, you just need to follow the following 2 steps
@@ -108,7 +73,9 @@ Usually, these files are placed under `<Android_SDK_Root>/system-images/android-
 
 Once you have finished the above two steps, you can try to start the Android emulator as usual.
 
-## Instrumentation tool ([download](https://drive.google.com/file/d/1uy6WZUzhf7AY5UwagzVjychb8APOi3A-/view?usp=share_link))
+## Static analysis ([download]())
+
+## Instrumentation tool ([download]())
 ### Requirements
 * Java 1.8 or above
 * Python 2 or 3 (We have tested on Python 2.7.16 and Python 3.6.8)
@@ -119,7 +86,7 @@ Once you have finished the above two steps, you can try to start the Android emu
 * Run `sh instrument.sh APP_FOLDER APP_PACKAGE_NAME PORT_NUM APP_TYPE NON_LIB_PKGS` to instrument an app. `APP_TYPE` can be `OPEN_SOURCE` or `CLOSE_SOURCE`. `PORT_NUM` is a port used by the instrumented app to communicate with a nodejs server to instrument dynamically-loaded JavaScript code. It is recommended to be set as 3016, 3018, 3020, ..., etc. `NON_LIB_PKGS` is an array of package names separated by "," that are used to filter out library code in an open-source app (e.g., if an app's application code is in `a.b.c` and `a.b.d`, `NON_LIB_PKGS` should be `a.b.c,a.b.d`. you may use `NA` if the app is a closed-source app). An example command can be `sh instrument.sh apps/org.wikipedia org.wikipedia 3016 OPEN_SOURCE org.wikipedia`).
 * When instrumentation finishes, you can see an `output` folder under the `APP_FOLDER`. The apk file whose name ends with `-aligned-debugSigned.apk` is the instrumented apk.
 
-## Test generation (wTest) ([download](https://drive.google.com/file/d/1kWmDeNJKb3TT5T-diWjPQNvyp9R2plj2/view?usp=share_link))
+## Test generation (wTest) ([download]())
 ### requirements
 * `export JAVA_HOME=YOUR_JAVA_HOME` (example: `export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/`)
 * `export ANDROID_HOME=YOUR_ANDROID_HOME` (example: `export ANDROID_HOME=/Library/Android/sdk`)
