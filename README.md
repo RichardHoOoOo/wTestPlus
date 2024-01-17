@@ -74,16 +74,21 @@ Usually, these files are placed under `<Android_SDK_Root>/system-images/android-
 Once you have finished the above two steps, you can try to start the Android emulator as usual.
 
 ## Static analysis ([download]())
+### Requirements
+* Java 1.8 or above
+### Steps to use
+* Create a folder for an app under test. The folder name should be the app's package name (We have created a folder for `org.woheller69.weather` under `<path_to_tool>/apps`).
+* Run `sh graph.sh APP_FOLDER APP_PACKAGE_NAME NON_LIB_PKGS` to statically build the GUI component transition graph for an app. `NON_LIB_PKGS` is an array of package names separated by "," that are used to filter out library code in an app (e.g., if an app's application code is in `a.b.c` and `a.b.d`, `NON_LIB_PKGS` should be `a.b.c,a.b.d`). An example command can be `sh graph.sh apps/org.woheller69.weather org.woheller69.weather org.woheller69.weather`).
 
-## Instrumentation tool ([download]())
+
+## Instrumentation ([packaged together with static analysis]())
 ### Requirements
 * Java 1.8 or above
 * Python 2 or 3 (We have tested on Python 2.7.16 and Python 3.6.8)
 * Node.js (We have tested on v16.13.2, v12.16.2, and v10.16.0. You may find these versions [here](https://nodejs.org/en/download/releases/). If you are using a Linux-based OS, you may install node by following the steps [here](https://www.digizol.com/2017/08/nodejs-install-no-root-sudo-permission-linux-centos.html))
 
 ### Steps to use
-* Create a folder for an app under test. The folder name should be the app's package name (We have created a folder for Wikipedia app under `<path_to_Instrumentation>/apps`).
-* Run `sh instrument.sh APP_FOLDER APP_PACKAGE_NAME PORT_NUM APP_TYPE NON_LIB_PKGS` to instrument an app. `APP_TYPE` can be `OPEN_SOURCE` or `CLOSE_SOURCE`. `PORT_NUM` is a port used by the instrumented app to communicate with a nodejs server to instrument dynamically-loaded JavaScript code. It is recommended to be set as 3016, 3018, 3020, ..., etc. `NON_LIB_PKGS` is an array of package names separated by "," that are used to filter out library code in an open-source app (e.g., if an app's application code is in `a.b.c` and `a.b.d`, `NON_LIB_PKGS` should be `a.b.c,a.b.d`. you may use `NA` if the app is a closed-source app). An example command can be `sh instrument.sh apps/org.wikipedia org.wikipedia 3016 OPEN_SOURCE org.wikipedia`).
+* Run `sh instrument.sh APP_FOLDER APP_PACKAGE_NAME PORT_NUM NON_LIB_PKGS` to instrument an app. `PORT_NUM` is a port used by the instrumented app to communicate with a nodejs server to instrument dynamically-loaded JavaScript code. It is recommended to be set as 3016, 3018, 3020, ..., etc. An example command can be `sh instrument.sh apps/org.woheller69.weather org.woheller69.weather 3016 org.woheller69.weather`).
 * When instrumentation finishes, you can see an `output` folder under the `APP_FOLDER`. The apk file whose name ends with `-aligned-debugSigned.apk` is the instrumented apk.
 
 ## Test generation (wTest) ([download]())
