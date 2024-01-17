@@ -77,7 +77,7 @@ Once you have finished the above two steps, you can try to start the Android emu
 ### Requirements
 * Java 1.8 or above
 ### Steps to use
-* Create a folder for an app under test. The folder name should be the app's package name (We have created a folder for `org.woheller69.weather` under `<path_to_tool>/apps`).
+* Create a folder for an app under test. The folder name should be the app's package name (We have created a folder for `org.woheller69.weather` under `<path_to_GraphAndInstrumentation>/apps`).
 * Run `sh graph.sh APP_FOLDER APP_PACKAGE_NAME NON_LIB_PKGS` to statically build the GUI component transition graph for an app. `NON_LIB_PKGS` is an array of package names separated by "," that are used to filter out library code in an app (e.g., if an app's application code is in `a.b.c` and `a.b.d`, `NON_LIB_PKGS` should be `a.b.c,a.b.d`). An example command can be `sh graph.sh apps/org.woheller69.weather org.woheller69.weather org.woheller69.weather`).
 
 
@@ -91,20 +91,22 @@ Once you have finished the above two steps, you can try to start the Android emu
 * Run `sh instrument.sh APP_FOLDER APP_PACKAGE_NAME PORT_NUM NON_LIB_PKGS` to instrument an app. `PORT_NUM` is a port used by the instrumented app to communicate with a nodejs server to instrument dynamically-loaded JavaScript code. It is recommended to be set as 3016, 3018, 3020, ..., etc. An example command can be `sh instrument.sh apps/org.woheller69.weather org.woheller69.weather 3016 org.woheller69.weather`).
 * When instrumentation finishes, you can see an `output` folder under the `APP_FOLDER`. The apk file whose name ends with `-aligned-debugSigned.apk` is the instrumented apk.
 
-## Test generation (wTest) ([download]())
+## Test generation (wTest+) ([download]())
 ### requirements
 * `export JAVA_HOME=YOUR_JAVA_HOME` (example: `export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/`)
 * `export ANDROID_HOME=YOUR_ANDROID_HOME` (example: `export ANDROID_HOME=/Library/Android/sdk`)
 * `export PATH=$PATH:${ANDROID_HOME}`
-* `export PATH=$PATH:<path_to_wTest>/node_modules/.bin` (make sure you have downloaded `wTest`)
+* `export PATH=$PATH:<path_to_wTestPlus>/node_modules/.bin` (make sure you have downloaded `wTestPlus`)
 * `export PATH=$PATH:${ANDROID_HOME}/emulator`
 * `export PATH=$PATH:${ANDROID_HOME}/platform-tools`
 * build-tools 27.0.3 (for ComboDroid) and 29.0.3 are required (they are usually at `${ANDROID_HOME}/build-tools`)
+* python3
+* droidbot ([link](https://github.com/honeynet/droidbot))
 
 ### Steps to use
-* Enter `<path_to_Instrumentation>/js` and run `sh launchServer.sh PORT_NUM`. This nodejs server is registered on a `PORT_NUM` in order to recevice JavaScript code that is dynamically constructed in the app under test. The server is responsible for instrumenting the js code and sending the instrumented code back to the app. `PORT_NUM` should be the same as the one used when instrumenting the app. An example command can be `sh launchServer.sh 3016`
+* Enter `<path_to_GraphAndInstrumentation>/js` and run `sh launchServer.sh PORT_NUM`. This nodejs server is registered on a `PORT_NUM` in order to recevice JavaScript code that is dynamically constructed from the app under test. The server is responsible for instrumenting the js code and sending the instrumented code back to the app. `PORT_NUM` should be the same as the one used when instrumenting the app. An example command can be `sh launchServer.sh 3016`
 * Launch Appium by `appium -p APPIUM_PORT` (example: `appium -p 4723`)
 * Launch an Android emulator
-* Enter `<path_to_wTest>` and run `sh test.sh STRATEGY PATH_TO_APP_FOLDER TIME_LIMIT ANDROID_SDK_PATH EMULATOR_ID APPIUM_PORT APP_TYPE AVD_NAME BUILD_TOOLS_VERSION SYSTEM_PORT`. `STRATEGY` can be `wVar` (stands for wTest), or `wDroid`, or `api` (stands for wTest-API), or `QTesting`, or `ComboDroid`, or `Fastbot` (stands for Fastbot2). `AVD_NAME` is the name of the android emulator. `BUILD_TOOLS_VERSION` must be set as 29.0.3. `SYSTEM_PORT` is a port used by appium if you test multiple apps in parallel. It is recommended to be set as 8200, 8201, 8202, etc. An example command can be 
-`sh test.sh wVar <path_to_Instrumentation>/apps/org.wikipedia 3600 ${ANDROID_HOME} emulator-5554 4723 OPEN_SOURCE emulator0 29.0.3 8200`
-* When reaching the time limit, you can see the output under `<path_to_wTest>/output/<STRATEGY>/<APP_PACKAGE_NAME>` (e.g., `<path_to_wTest>/output/wVar/org.wikipedia`). Under this folder, `coverage.txt` contains the covered WebView-specific properties and WebView API call sites over 60 minutes (time0, time1, ..., time59 means 1 minute, 2 minute, ..., 60 minute). Code coverage is also reported.
+* Enter `<path_to_wTestPlus>` and run `sh test.sh STRATEGY PATH_TO_APP_FOLDER TIME_LIMIT ANDROID_SDK_PATH EMULATOR_ID APPIUM_PORT AVD_NAME BUILD_TOOLS_VERSION SYSTEM_PORT PYTHON3 DROIDBOT`. `STRATEGY` can be `wVar_sa` (stands for wTest+), or `wVar` (stands for wTest), or `wDroid`, or `api` (stands for wTest-API), or `code` (stands for wTest-Code), or `QTesting`, or `ComboDroid`, or `Fastbot` (stands for Fastbot2), or `AdaT`. `AVD_NAME` is the name of the android emulator. `BUILD_TOOLS_VERSION` must be set as 29.0.3. `SYSTEM_PORT` is a port used by appium if you test multiple apps in parallel. It is recommended to be set as 8200, 8201, 8202, etc. `PYTHON3` is the path to your python3 command (you can check by `which python3`). `DROIDBOT` is the path to your droidbot command (you can check by `which droidbot`). An example command can be 
+`sh test.sh wVar_sa <path_to_GraphAndInstrumentation>/apps/org.woheller69.weather 3600 ${ANDROID_HOME} emulator-5554 4723 emulator0 29.0.3 8200 /usr/bin/python3 <root>/.local/bin/droidbot`.
+* When reaching the time limit, you can see the output under `<path_to_wTestPlus>/output/<STRATEGY>/<APP_PACKAGE_NAME>` (e.g., `<path_to_wTestPlus>/output/wVar_sa/org.woheller69.weather`). Under this folder, `coverage.txt` contains the covered WebView-specific properties and WebView API call sites over 60 minutes (time0, time1, ..., time59 means 1 minute, 2 minute, ..., 60 minute). Code coverage is also reported.
